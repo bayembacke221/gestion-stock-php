@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteBase /login-registration-with-jwt
+RewriteRule ^$ public/index.php [L]
+RewriteRule ^(.*)$ public/$1 [L]
