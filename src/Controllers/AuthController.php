@@ -43,6 +43,7 @@ class AuthController {
             $_SESSION['user_email'] = $user['email'];
             $_SESSION['user_username'] = $user['username'];
 
+
             http_response_code(200);
             echo json_encode([
                 "message" => "Login successful",

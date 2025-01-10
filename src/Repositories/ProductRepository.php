@@ -60,7 +60,6 @@ class ProductRepository {
             return null;
         }
 
-        // Use the same mapping logic as findAllMe for consistency
         if (isset($result['created_at'])) {
             $result['createdAt'] = new \DateTime($result['created_at']);
             unset($result['created_at']);
@@ -178,14 +177,9 @@ class ProductRepository {
     }
 
     public function percentageProductUp(int $userId): int{
-        $sql = 'SELECT COUNT(*) FROM '. $this->table .' WHERE user_id = :user_id AND price > 0';
+        $sql = 'SELECT COUNT(*) FROM '. $this->table .' WHERE user_id = :user_id AND price > 100';
         $stmt = $this->db->prepare($sql);
         $stmt->execute(['user_id' => $userId]);
-        $totalProduct = $stmt->fetchColumn();
-        $sql = 'SELECT COUNT(*) FROM '. $this->table .' WHERE user_id = :user_id AND price > 0 AND price < 100';
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute(['user_id' => $userId]);
-        $totalProductUnder100 = $stmt->fetchColumn();
-        return ($totalProductUnder100 / $totalProduct) * 100;
+        return $stmt->fetchColumn();
     }
 }

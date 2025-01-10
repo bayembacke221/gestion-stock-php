@@ -22,6 +22,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 const data = await response.json();
                 const messageDiv = document.getElementById('loginMessage');
+                console.log(data);
+                localStorage.setItem('token', data.token);
 
                 if (response.ok) {
                     messageDiv.className = 'alert alert-success';

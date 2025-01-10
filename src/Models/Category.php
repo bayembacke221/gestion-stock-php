@@ -4,10 +4,10 @@ namespace App\Models;
 
 class Category
 {
-    private ?int $id=null;
+    private ?int $id = null;
     private string $name;
-    private ?string $description;
-    private ?int $parentCategoryId;
+    private ?string $description = null;
+    private ?int $parentCategoryId = null;
     private int $userId;
     private \DateTime $createdAt;
     private \DateTime $updatedAt;
@@ -40,7 +40,7 @@ class Category
         return $this->name;
     }
 
-    public function getDescription(): ?string {
+    public function getDescription(): ?string {  // Updated return type
         return $this->description;
     }
 
@@ -56,8 +56,7 @@ class Category
         return $this->updatedAt;
     }
 
-    public function getUserId():int
-    {
+    public function getUserId(): int {
         return $this->userId;
     }
 
@@ -93,18 +92,17 @@ class Category
         return $this;
     }
 
-
-    public function setUserId(int $userId): self
-    {
+    public function setUserId(int $userId): self {
         $this->userId = $userId;
         return $this;
     }
+
     public function toArray(): array {
-        $data= [
-            'name' => $this->name,
-            'description' => $this->description,
-            'parentCategoryId' => $this->parentCategoryId,
-            'userId' => $this->userId,
+        $data = [
+            'name' => $this->getName(),
+            'description' => $this->getDescription(),
+            'parentCategoryId' => $this->getParentCategoryId(),
+            'userId' => $this->getUserId(),
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s')
         ];

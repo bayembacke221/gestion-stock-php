@@ -135,7 +135,11 @@ switch ($path) {
             $authController->logout();
         }
         break;
-
+    case '/api/settings/categories':
+        if ($method === 'GET') {
+            $categoryController->showHomePage();
+        }
+        break;
     default:
         http_response_code(404);
         echo "Page non trouvée";

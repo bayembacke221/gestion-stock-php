@@ -26,9 +26,11 @@ CREATE TABLE Category (
                           name VARCHAR(100) NOT NULL,
                           description TEXT,
                           parent_category_id INT,
+                          user_id INT NOT NULL ,
                           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                           updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                           FOREIGN KEY (parent_category_id) REFERENCES Category(id)
+
 );
 
 -- Warehouse table
@@ -265,4 +267,10 @@ ALTER TABLE StockReturnItem
 -- Add foreign key for user in StockReturn table
 ALTER TABLE StockReturn
     ADD FOREIGN KEY (approved_by) REFERENCES User(id);
+
+-- Add foreign key for user in Category table
+ALTER TABLE Category
+    ADD FOREIGN KEY (user_id) REFERENCES User(id);
+
+
 

@@ -17,7 +17,7 @@ class CategoryRepository
         $query = "SELECT * FROM " . $this->table . " WHERE user_id = :user_id";
         $stmt = $this->db->prepare($query);
         $stmt->execute(['user_id' => $userId]);
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
         return array_map(function($row) {
             if (isset($row['created_at'])) {
@@ -33,6 +33,7 @@ class CategoryRepository
                 'id' => $row['id'],
                 'name' => $row['name'],
                 'userId' => $row['user_id'],
+                'description' => $row['description'],
                 'createdAt' => $row['createdAt'],
                 'updatedAt' => $row['updatedAt']
             ];
@@ -47,7 +48,7 @@ class CategoryRepository
         $stmt = $this->db->prepare($query);
         $stmt->execute(['id' => $categoryId, 'user_id' => $userId]);
 
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
 
         if (!$result) {
             return null;
@@ -66,6 +67,7 @@ class CategoryRepository
             'id' => $result['id'],
             'name' => $result['name'],
             'userId' => $result['user_id'],
+            'description' => $result['description'],
             'createdAt' => $result['createdAt'],
             'updatedAt' => $result['updatedAt']
         ];

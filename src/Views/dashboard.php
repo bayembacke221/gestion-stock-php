@@ -173,14 +173,37 @@ $base = '/login-registration-with-jwt';
             padding: 1.5rem;
             box-shadow: 0 4px 20px rgba(0,0,0,0.05);
         }
+
+        .nav-link[data-bs-toggle="collapse"] {
+            position: relative;
+        }
+
+        .nav-link[data-bs-toggle="collapse"] .fa-chevron-down {
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .nav-link[data-bs-toggle="collapse"][aria-expanded="true"] .fa-chevron-down {
+            transform: rotate(180deg);
+        }
+
+        #settingsSubmenu .nav-link {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+            padding: 0.5rem 1rem;
+        }
+
+        #settingsSubmenu .nav-link:hover {
+            color: white;
+            background-color: rgba(255,255,255,0.1);
+        }
     </style>
 </head>
 <body>
-<!--<div id="loadingScreen" class="position-fixed top-0 start-0 w-100 h-100 bg-white d-flex justify-content-center align-items-center" style="z-index: 9999;">-->
-<!--    <div class="spinner-border text-primary" role="status">-->
-<!--        <span class="visually-hidden">Chargement...</span>-->
-<!--    </div>-->
-<!--</div>-->
+<div id="loadingScreen" class="position-fixed top-0 start-0 w-100 h-100 bg-white d-flex justify-content-center align-items-center" style="z-index: 9999;">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Chargement...</span>
+    </div>
+</div>
 
 <button id="sidebarToggle" class="toggle-btn">
     <i class="fas fa-bars"></i>
@@ -203,26 +226,67 @@ $base = '/login-registration-with-jwt';
             <hr class="my-4">
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#"><i class="fas fa-chart-pie me-2"></i>Vue d'ensemble</a>
+                    <a class="nav-link active" href="<?= $base ?>/dashboard">
+                        <i class="fas fa-chart-pie me-2"></i>Vue d'ensemble
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fas fa-boxes me-2"></i>Inventaire</a>
+                    <a class="nav-link" href="<?= $base ?>/inventory">
+                        <i class="fas fa-boxes me-2"></i>Inventaire
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fas fa-truck me-2"></i>Livraisons</a>
+                    <a class="nav-link" href="<?= $base ?>/deliveries">
+                        <i class="fas fa-truck me-2"></i>Livraisons
+                    </a>
                 </li>
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" href="--><?php //= $base ?><!--/movements">-->
+<!--                        <i class="fas fa-exchange-alt me-2"></i>Mouvements-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" href="--><?php //= $base ?><!--/alerts">-->
+<!--                        <i class="fas fa-exclamation-triangle me-2"></i>Alertes-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" href="--><?php //= $base ?><!--/reports">-->
+<!--                        <i class="fas fa-file-alt me-2"></i>Rapports-->
+<!--                    </a>-->
+<!--                </li>-->
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fas fa-exchange-alt me-2"></i>Mouvements</a>
+                    <a class="nav-link d-flex align-items-center justify-content-between"
+                       data-bs-toggle="collapse"
+                       href="#settingsSubmenu"
+                       role="button"
+                       aria-expanded="false"
+                       aria-controls="settingsSubmenu">
+            <span>
+                <i class="fas fa-cog me-2"></i>Paramètres
+            </span>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="settingsSubmenu">
+                        <ul class="nav flex-column ms-3 mt-2">
+                            <li class="nav-item">
+                                <a class="nav-link py-2" href="<?= $base ?>/api/settings/categories">
+                                    <i class="fas fa-tags me-2"></i>Catégories
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link py-2" href="<?= $base ?>/api/settings/users">
+                                    <i class="fas fa-users me-2"></i>Utilisateurs
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link py-2" href="<?= $base ?>/api/settings/company">
+                                    <i class="fas fa-building me-2"></i>Entreprise
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" href="#"><i class="fas fa-exclamation-triangle me-2"></i>Alertes</a>-->
-<!--                </li>-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" href="#"><i class="fas fa-file-alt me-2"></i>Rapports</a>-->
-<!--                </li>-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" href="#"><i class="fas fa-cog me-2"></i>Paramètres</a>-->
-<!--                </li>-->
                 <li class="nav-item mt-3">
                     <a class="nav-link text-danger" href="#" id="logoutBtn">
                         <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
@@ -472,10 +536,11 @@ $base = '/login-registration-with-jwt';
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
 <script src="<?= $base ?>/public/assets/js/dashboard.js"></script>
+<script src="<?= $base ?>/public/assets/js/navigation.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Masquer l'écran de chargement
-        // document.getElementById('loadingScreen').classList.add('d-none');
+        document.getElementById('loadingScreen').classList.add('d-none');
 
         // Gérer la déconnexion
         document.getElementById('logoutBtn').addEventListener('click', () => {

@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Core\View;
 use App\Services\CategoryService;
 
 class CategoryController
@@ -190,6 +191,18 @@ class CategoryController
                 "message" => $e->getMessage()
             ]);
         }
+    }
+
+    public function showHomePage() {
+        session_start();
+        $categories = $this->categoryService->findAllMe($_SESSION['user_id']);
+        $categoriesArray = array_map(function($category) {
+            return $category->toArray();
+        }, $categories);
+        $view = new View('settings/categories/index');
+        $view->assign('title', 'Categories - Settings');
+        $view->assign('categories', $categoriesArray);
+        $view->render();
     }
 
 
