@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Controllers\AuthController;
+use App\Controllers\CategoryController;
 use App\Controllers\ProductController;
 
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
@@ -18,6 +19,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 $authController = new AuthController();
 $productController = new ProductController();
+$categoryController = new CategoryController();
 
 if ($method === 'POST' || strpos($path, '/protected') === 0) {
     header('Content-Type: application/json');
@@ -101,7 +103,33 @@ switch ($path) {
             $productController->getByCategory($matches[1]);
         }
         break;
-
+    case 'api/categories':
+        if ($method === 'GET') {
+            $categoryController->index();
+        } elseif ($method === 'POST') {
+            $categoryController->create();
+        }
+        break;
+    case (preg_match('/^\/api\/categories\/(\d+)$/', $path, $matches) ? true : false):
+        $categoryId = $matches[1];
+        if ($method === 'GET') {
+            $categoryController->show($categoryId);
+        } elseif ($method === 'PUT' || $method === 'PATCH') {
+            $categoryController->update($categoryId);
+        } elseif ($method === 'DELETE') {
+            $categoryController->delete($categoryId);
+        }
+        break;
+    case '/api/categories/search':
+        if ($method === 'GET') {
+            $categoryController->search();
+        }
+        break;
+    case '/api/categories/total':
+        if ($method === 'GET') {
+            $categoryController->total();
+        }
+        break;
     case '/logout':
         if ($method === 'GET') {
             $authController->logout();

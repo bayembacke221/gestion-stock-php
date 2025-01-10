@@ -8,6 +8,7 @@ class Category
     private string $name;
     private ?string $description;
     private ?int $parentCategoryId;
+    private int $userId;
     private \DateTime $createdAt;
     private \DateTime $updatedAt;
 
@@ -55,6 +56,11 @@ class Category
         return $this->updatedAt;
     }
 
+    public function getUserId():int
+    {
+        return $this->userId;
+    }
+
     // Setters
 
     public function setId(int $id): self {
@@ -87,11 +93,18 @@ class Category
         return $this;
     }
 
+
+    public function setUserId(int $userId): self
+    {
+        $this->userId = $userId;
+        return $this;
+    }
     public function toArray(): array {
         $data= [
             'name' => $this->name,
             'description' => $this->description,
             'parentCategoryId' => $this->parentCategoryId,
+            'userId' => $this->userId,
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s')
         ];
