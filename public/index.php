@@ -74,7 +74,8 @@ switch ($path) {
         if ($method === 'GET') {
             $productController->index();
         } elseif ($method === 'POST') {
-            $productController->store();
+            error_log("Appel de la méthode create du contrôleur");
+            $productController->create();
         }
         break;
 

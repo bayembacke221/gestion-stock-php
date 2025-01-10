@@ -117,6 +117,120 @@ function saveProductChanges() {
         });
 }
 
+
+// Fonction pour afficher le formulaire d'ajout de produit
+function showAddProductForm(userId) {
+    const modalContent = `
+    <div class="modal fade" id="addProductModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ajouter un produit</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addProductForm">
+                        <div class="mb-3">
+                            <label class="form-label">Nom du produit</label>
+                            <input type="text" class="form-control" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Description du produit</label>
+                            <input type="text" class="form-control" name="description" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Code barre du produit</label>
+                            <input type="text" class="form-control" name="barcode" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Prix du produit</label>
+                            <input type="number" step="0.01" class="form-control" name="price" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Unité du produit</label>
+                            <input type="text" class="form-control" name="unit" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="hidden" class="form-control" name="user_id" value="${userId}">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Catégorie</label>
+                            <input type="number" class="form-control" name="category_id" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Quantité minimale</label>
+                            <input type="number" class="form-control" name="min_stock" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Quantité maximale</label>
+                            <input type="number" class="form-control" name="max_stock" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary" onclick="saveNewProduct()">Ajouter</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    `;
+
+    // Ajouter la modale au document
+    document.body.insertAdjacentHTML('beforeend', modalContent);
+
+    // Initialiser et afficher la modale
+    const modal = new bootstrap.Modal(document.getElementById('addProductModal'));
+    modal.show();
+
+    // Nettoyer la modale après fermeture
+    document.getElementById('addProductModal').addEventListener('hidden.bs.modal', function() {
+        this.remove();
+    });
+}
+
+// Fonction pour sauvegarder le nouveau produit
+function saveNewProduct() {
+    const form = document.getElementById('addProductForm');
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    // Log des données envoyées
+    console.log('Données envoyées:', data);
+
+    fetch('/login-registration-with-jwt/api/products', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+        .then(response => {
+            // Afficher la réponse brute
+            return response.text().then(text => {
+                console.log('Réponse brute du serveur:', text);
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                    throw new Error('Réponse serveur invalide: ' + text);
+                }
+            });
+        })
+        .then(result => {
+            if (result.status === "success") {
+                bootstrap.Modal.getInstance(document.getElementById('addProductModal')).hide();
+                location.reload();
+            } else {
+                alert(result.message || 'Erreur lors de l\'ajout du produit');
+            }
+        })
+        .catch(error => {
+            console.error('Erreur complète:', error);
+            alert('Erreur lors de l\'ajout du produit');
+        });
+}
+
 // Fonction pour visualiser un produit
 function viewProduct(productId) {
     fetch(`/login-registration-with-jwt/api/products/${productId}`, {

@@ -316,7 +316,7 @@ $base = '/login-registration-with-jwt';
                                 <h5 class="mb-0">État des stocks</h5>
                                 <div class="btn-group">
                                     <button class="btn btn-sm btn-outline-primary">Exporter</button>
-                                    <button class="btn btn-sm btn-primary">+ Ajouter</button>
+                                    <button class="btn btn-sm btn-primary" onclick="showAddProductForm('<?= $user['data']['id'] ?>')">+ Ajouter</button>
                                 </div>
                             </div>
                         </div>

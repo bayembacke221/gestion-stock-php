@@ -3,7 +3,7 @@
 namespace App\Models;
 
 class Product {
-    private int $id;
+    private  ?int $id = null;
     private string $name;
     private string $description;
     private string $barcode;
@@ -35,7 +35,7 @@ class Product {
     }
 
     // Getters
-    public function getId(): int {
+    public function getId(): ?int {
         return $this->id;
     }
 
@@ -145,8 +145,7 @@ class Product {
     }
 
     public function toArray(): array {
-        return [
-            'id' => $this->getId(),
+        $data = [
             'name' => $this->getName(),
             'description' => $this->getDescription(),
             'barcode' => $this->getBarcode(),
@@ -155,10 +154,16 @@ class Product {
             'min_stock' => $this->getMinStock(),
             'max_stock' => $this->getMaxStock(),
             'unit' => $this->getUnit(),
+            'user_id' => $this->getUserId(),
             'created_at' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
-            'updated_at' => $this->getUpdatedAt()->format('Y-m-d H:i:s'),
-            'user_id' => $this->getUserId()
+            'updated_at' => $this->getUpdatedAt()->format('Y-m-d H:i:s')
         ];
+
+        if ($this->id !== null) {
+            $data['id'] = $this->getId();
+        }
+
+        return $data;
     }
 
 }

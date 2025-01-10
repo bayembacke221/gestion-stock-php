@@ -61,31 +61,51 @@ class ProductController {
         }
     }
 
-    public function store() {
+    public function create() {
         try {
-            $decoded = \App\Middleware\AuthMiddleware::verifyToken();
-            $data = json_decode(file_get_contents("php://input"), true);
+            error_log("Début de la méthode create");
 
-            $data['userId'] = $decoded->data->id;
+            $decoded = \App\Middleware\AuthMiddleware::verifyToken();
+            $rawData = file_get_contents("php://input");
+            error_log("Données reçues: " . $rawData);
+
+            $data = json_decode($rawData, true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                error_log("Erreur JSON: " . json_last_error_msg());
+                throw new \Exception("Invalid JSON data");
+            }
+
+            error_log("Données décodées: " . print_r($data, true));
+
+            // Ajouter les timestamps
             $data['createdAt'] = new \DateTime();
             $data['updatedAt'] = new \DateTime();
 
-            $product = new Product($data);
+            // Créer une nouvelle instance de Product
+            $product = new Product();
+            $product->hydrate($data);
+
+            error_log("Produit après hydratation: " . print_r($product->toArray(), true));
 
             if ($this->productService->saveMe($product)) {
                 http_response_code(201);
-                echo json_encode([
+                $response = [
                     "status" => "success",
                     "message" => "Product created successfully"
-                ]);
+                ];
+                error_log("Succès: " . json_encode($response));
+                echo json_encode($response);
             } else {
                 http_response_code(400);
-                echo json_encode([
+                $response = [
                     "status" => "error",
                     "message" => "Unable to create product"
-                ]);
+                ];
+                error_log("Échec: " . json_encode($response));
+                echo json_encode($response);
             }
         } catch (\Exception $e) {
+            error_log('Exception complète: ' . $e->getMessage() . "\n" . $e->getTraceAsString());
             http_response_code(500);
             echo json_encode([
                 "status" => "error",
