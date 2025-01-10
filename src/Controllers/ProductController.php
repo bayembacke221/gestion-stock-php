@@ -99,6 +99,9 @@ class ProductController {
             $decoded = \App\Middleware\AuthMiddleware::verifyToken();
             $data = json_decode(file_get_contents("php://input"), true);
 
+            // Log des données reçues
+            error_log('Données reçues : ' . print_r($data, true));
+
             $product = $this->productService->findOneMe($productId, $decoded->data->id);
             if (!$product) {
                 http_response_code(404);
@@ -109,8 +112,14 @@ class ProductController {
                 return;
             }
 
+            // Log de l'état du produit avant hydratation
+            error_log('Produit avant hydratation : ' . print_r($product, true));
+
             $data['updatedAt'] = new \DateTime();
             $product->hydrate($data);
+
+            // Log de l'état du produit après hydratation
+            error_log('Produit après hydratation : ' . print_r($product, true));
 
             if ($this->productService->saveMe($product)) {
                 http_response_code(200);
@@ -126,6 +135,7 @@ class ProductController {
                 ]);
             }
         } catch (\Exception $e) {
+            error_log('Exception : ' . $e->getMessage());
             http_response_code(500);
             echo json_encode([
                 "status" => "error",

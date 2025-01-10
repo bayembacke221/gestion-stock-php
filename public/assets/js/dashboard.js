@@ -27,6 +27,22 @@ function editProduct(productId,userId) {
                                     <input type="text" class="form-control" name="name" value="${data.name}" required>
                                 </div>
                                 <div class="mb-3">
+                                    <label class="form-label">Description du produit</label>
+                                    <input type="text" class="form-control" name="description" value="${data.description}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Code barre du produit</label>
+                                    <input type="text" class="form-control" name="barcode" value="${data.barcode}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Prix du produit</label>
+                                    <input type="text" class="form-control" name="price" value="${data.price}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Unite du produit</label>
+                                    <input type="text" class="form-control" name="unit" value="${data.unit}" required>
+                                </div>
+                                <div class="mb-3">
                                     <input type="hidden" class="form-control" name="user_id" value="${userId}" required>
                                 </div>
                                 <div class="mb-3">
@@ -76,10 +92,6 @@ function saveProductChanges() {
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
 
-    console.log(
-        'Envoi des données suivantes pour la sauvegarde des modifications:',
-        data
-    )
 
     fetch(`/login-registration-with-jwt/api/products/${data.id}`, {
         method: 'PUT',

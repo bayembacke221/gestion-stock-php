@@ -128,7 +128,7 @@ class ProductRepository {
         WHERE id = :id AND user_id = :user_id';
 
         $stmt = $this->db->prepare($sql);
-        return $stmt->execute([
+        $params = [
             'id' => $product->getId(),
             'name' => $product->getName(),
             'description' => $product->getDescription(),
@@ -139,7 +139,14 @@ class ProductRepository {
             'max_stock' => $product->getMaxStock(),
             'unit' => $product->getUnit(),
             'user_id' => $product->getUserId()
-        ]);
+        ];
+
+        error_log('Paramètres de la requête UPDATE : ' . print_r($params, true));
+
+        $result = $stmt->execute($params);
+        error_log('Nombre de lignes affectées : ' . $stmt->rowCount());
+
+        return $result;
     }
 
     public function deleteMe(int $productId,int $userId): bool {

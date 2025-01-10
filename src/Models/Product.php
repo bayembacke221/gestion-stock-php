@@ -22,8 +22,10 @@ class Product {
 
     public function hydrate(array $data): void {
         foreach ($data as $key => $value) {
+            $key = lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $key))));
             $method = 'set' . ucfirst($key);
-            if (method_exists($this, $method)) {
+
+            if (method_exists($this, $method) && $value !== null) {
                 if (in_array($key, ['createdAt', 'updatedAt']) && !($value instanceof \DateTime)) {
                     $value = new \DateTime($value);
                 }
