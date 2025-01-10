@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
-class Warehouse
+class OrderItem
 {
-    private ?int $id= null;
-    private string $name;
-    private ?string $address;
-    private ?float $capacity;
-    private ?string $manager;
-    private bool $isActive;
+    private ?int $id=null;
+    private int $purchaseOrderId;
+    private int $productId;
+    private int $quantity;
+    private float $unitPrice;
+    private float $totalPrice;
+    private string $status;
     private \DateTime $createdAt;
     private \DateTime $updatedAt;
 
@@ -37,24 +38,28 @@ class Warehouse
         return $this->id;
     }
 
-    public function getName(): string {
-        return $this->name;
+    public function getPurchaseOrderId(): int {
+        return $this->purchaseOrderId;
     }
 
-    public function getAddress(): ?string {
-        return $this->address;
+    public function getProductId(): int {
+        return $this->productId;
     }
 
-    public function getCapacity(): ?float {
-        return $this->capacity;
+    public function getQuantity(): int {
+        return $this->quantity;
     }
 
-    public function getManager(): ?string {
-        return $this->manager;
+    public function getUnitPrice(): float {
+        return $this->unitPrice;
     }
 
-    public function getIsActive(): bool {
-        return $this->isActive;
+    public function getTotalPrice(): float {
+        return $this->totalPrice;
+    }
+
+    public function getStatus(): string {
+        return $this->status;
     }
 
     public function getCreatedAt(): \DateTime {
@@ -72,28 +77,33 @@ class Warehouse
         return $this;
     }
 
-    public function setName(string $name): self {
-        $this->name = $name;
+    public function setPurchaseOrderId(int $purchaseOrderId): self {
+        $this->purchaseOrderId = $purchaseOrderId;
         return $this;
     }
 
-    public function setAddress(?string $address): self {
-        $this->address = $address;
+    public function setProductId(int $productId): self {
+        $this->productId = $productId;
         return $this;
     }
 
-    public function setCapacity(?float $capacity): self {
-        $this->capacity = $capacity;
+    public function setQuantity(int $quantity): self {
+        $this->quantity = $quantity;
         return $this;
     }
 
-    public function setManager(?string $manager): self {
-        $this->manager = $manager;
+    public function setUnitPrice(float $unitPrice): self {
+        $this->unitPrice = $unitPrice;
         return $this;
     }
 
-    public function setIsActive(bool $isActive): self {
-        $this->isActive = $isActive;
+    public function setTotalPrice(float $totalPrice): self {
+        $this->totalPrice = $totalPrice;
+        return $this;
+    }
+
+    public function setStatus(string $status): self {
+        $this->status = $status;
         return $this;
     }
 
@@ -109,11 +119,12 @@ class Warehouse
 
     public function toArray(): array {
         $data= [
-            'name' => $this->name,
-            'address' => $this->address,
-            'capacity' => $this->capacity,
-            'manager' => $this->manager,
-            'isActive' => $this->isActive,
+            'purchaseOrderId' => $this->purchaseOrderId,
+            'productId' => $this->productId,
+            'quantity' => $this->quantity,
+            'unitPrice' => $this->unitPrice,
+            'totalPrice' => $this->totalPrice,
+            'status' => $this->status,
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s')
         ];

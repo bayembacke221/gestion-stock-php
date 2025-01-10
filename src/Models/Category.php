@@ -2,14 +2,12 @@
 
 namespace App\Models;
 
-class Warehouse
+class Category
 {
-    private ?int $id= null;
+    private ?int $id=null;
     private string $name;
-    private ?string $address;
-    private ?float $capacity;
-    private ?string $manager;
-    private bool $isActive;
+    private ?string $description;
+    private ?int $parentCategoryId;
     private \DateTime $createdAt;
     private \DateTime $updatedAt;
 
@@ -41,20 +39,12 @@ class Warehouse
         return $this->name;
     }
 
-    public function getAddress(): ?string {
-        return $this->address;
+    public function getDescription(): ?string {
+        return $this->description;
     }
 
-    public function getCapacity(): ?float {
-        return $this->capacity;
-    }
-
-    public function getManager(): ?string {
-        return $this->manager;
-    }
-
-    public function getIsActive(): bool {
-        return $this->isActive;
+    public function getParentCategoryId(): ?int {
+        return $this->parentCategoryId;
     }
 
     public function getCreatedAt(): \DateTime {
@@ -77,23 +67,13 @@ class Warehouse
         return $this;
     }
 
-    public function setAddress(?string $address): self {
-        $this->address = $address;
+    public function setDescription(?string $description): self {
+        $this->description = $description;
         return $this;
     }
 
-    public function setCapacity(?float $capacity): self {
-        $this->capacity = $capacity;
-        return $this;
-    }
-
-    public function setManager(?string $manager): self {
-        $this->manager = $manager;
-        return $this;
-    }
-
-    public function setIsActive(bool $isActive): self {
-        $this->isActive = $isActive;
+    public function setParentCategoryId(?int $parentCategoryId): self {
+        $this->parentCategoryId = $parentCategoryId;
         return $this;
     }
 
@@ -110,10 +90,8 @@ class Warehouse
     public function toArray(): array {
         $data= [
             'name' => $this->name,
-            'address' => $this->address,
-            'capacity' => $this->capacity,
-            'manager' => $this->manager,
-            'isActive' => $this->isActive,
+            'description' => $this->description,
+            'parentCategoryId' => $this->parentCategoryId,
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s')
         ];

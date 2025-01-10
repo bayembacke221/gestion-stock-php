@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-class Warehouse
+class Inventory
 {
-    private ?int $id= null;
-    private string $name;
-    private ?string $address;
-    private ?float $capacity;
-    private ?string $manager;
-    private bool $isActive;
+    private ?int $id=null;
+    private \DateTime $date;
+    private string $type;
+    private string $status;
+    private int $conductedBy;
+    private ?string $notes;
     private \DateTime $createdAt;
     private \DateTime $updatedAt;
 
@@ -23,7 +23,7 @@ class Warehouse
             $method = 'set' . ucfirst($key);
 
             if (method_exists($this, $method) && $value !== null) {
-                if (in_array($key, ['createdAt', 'updatedAt']) && !($value instanceof \DateTime)) {
+                if (in_array($key, ['date', 'createdAt', 'updatedAt']) && !($value instanceof \DateTime)) {
                     $value = new \DateTime($value);
                 }
                 $this->$method($value);
@@ -37,24 +37,24 @@ class Warehouse
         return $this->id;
     }
 
-    public function getName(): string {
-        return $this->name;
+    public function getDate(): \DateTime {
+        return $this->date;
     }
 
-    public function getAddress(): ?string {
-        return $this->address;
+    public function getType(): string {
+        return $this->type;
     }
 
-    public function getCapacity(): ?float {
-        return $this->capacity;
+    public function getStatus(): string {
+        return $this->status;
     }
 
-    public function getManager(): ?string {
-        return $this->manager;
+    public function getConductedBy(): int {
+        return $this->conductedBy;
     }
 
-    public function getIsActive(): bool {
-        return $this->isActive;
+    public function getNotes(): ?string {
+        return $this->notes;
     }
 
     public function getCreatedAt(): \DateTime {
@@ -72,28 +72,28 @@ class Warehouse
         return $this;
     }
 
-    public function setName(string $name): self {
-        $this->name = $name;
+    public function setDate(\DateTime $date): self {
+        $this->date = $date;
         return $this;
     }
 
-    public function setAddress(?string $address): self {
-        $this->address = $address;
+    public function setType(string $type): self {
+        $this->type = $type;
         return $this;
     }
 
-    public function setCapacity(?float $capacity): self {
-        $this->capacity = $capacity;
+    public function setStatus(string $status): self {
+        $this->status = $status;
         return $this;
     }
 
-    public function setManager(?string $manager): self {
-        $this->manager = $manager;
+    public function setConductedBy(int $conductedBy): self {
+        $this->conductedBy = $conductedBy;
         return $this;
     }
 
-    public function setIsActive(bool $isActive): self {
-        $this->isActive = $isActive;
+    public function setNotes(?string $notes): self {
+        $this->notes = $notes;
         return $this;
     }
 
@@ -109,11 +109,11 @@ class Warehouse
 
     public function toArray(): array {
         $data= [
-            'name' => $this->name,
-            'address' => $this->address,
-            'capacity' => $this->capacity,
-            'manager' => $this->manager,
-            'isActive' => $this->isActive,
+            'date' => $this->date->format('Y-m-d H:i:s'),
+            'type' => $this->type,
+            'status' => $this->status,
+            'conductedBy' => $this->conductedBy,
+            'notes' => $this->notes,
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s')
         ];

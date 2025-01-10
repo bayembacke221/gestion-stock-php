@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-class Warehouse
+class StockReturn
 {
-    private ?int $id= null;
-    private string $name;
-    private ?string $address;
-    private ?float $capacity;
-    private ?string $manager;
-    private bool $isActive;
+    private ?int $id=null;
+    private \DateTime $date;
+    private string $reason;
+    private string $status;
+    private int $approvedBy;
     private \DateTime $createdAt;
     private \DateTime $updatedAt;
 
@@ -23,7 +22,7 @@ class Warehouse
             $method = 'set' . ucfirst($key);
 
             if (method_exists($this, $method) && $value !== null) {
-                if (in_array($key, ['createdAt', 'updatedAt']) && !($value instanceof \DateTime)) {
+                if (in_array($key, ['date', 'createdAt', 'updatedAt']) && !($value instanceof \DateTime)) {
                     $value = new \DateTime($value);
                 }
                 $this->$method($value);
@@ -33,28 +32,24 @@ class Warehouse
 
     // Getters
 
-    public function getId(): ?int {
+    public function getId(): int {
         return $this->id;
     }
 
-    public function getName(): string {
-        return $this->name;
+    public function getDate(): \DateTime {
+        return $this->date;
     }
 
-    public function getAddress(): ?string {
-        return $this->address;
+    public function getReason(): string {
+        return $this->reason;
     }
 
-    public function getCapacity(): ?float {
-        return $this->capacity;
+    public function getStatus(): string {
+        return $this->status;
     }
 
-    public function getManager(): ?string {
-        return $this->manager;
-    }
-
-    public function getIsActive(): bool {
-        return $this->isActive;
+    public function getApprovedBy(): int {
+        return $this->approvedBy;
     }
 
     public function getCreatedAt(): \DateTime {
@@ -72,28 +67,23 @@ class Warehouse
         return $this;
     }
 
-    public function setName(string $name): self {
-        $this->name = $name;
+    public function setDate(\DateTime $date): self {
+        $this->date = $date;
         return $this;
     }
 
-    public function setAddress(?string $address): self {
-        $this->address = $address;
+    public function setReason(string $reason): self {
+        $this->reason = $reason;
         return $this;
     }
 
-    public function setCapacity(?float $capacity): self {
-        $this->capacity = $capacity;
+    public function setStatus(string $status): self {
+        $this->status = $status;
         return $this;
     }
 
-    public function setManager(?string $manager): self {
-        $this->manager = $manager;
-        return $this;
-    }
-
-    public function setIsActive(bool $isActive): self {
-        $this->isActive = $isActive;
+    public function setApprovedBy(int $approvedBy): self {
+        $this->approvedBy = $approvedBy;
         return $this;
     }
 
@@ -109,11 +99,10 @@ class Warehouse
 
     public function toArray(): array {
         $data= [
-            'name' => $this->name,
-            'address' => $this->address,
-            'capacity' => $this->capacity,
-            'manager' => $this->manager,
-            'isActive' => $this->isActive,
+            'date' => $this->date->format('Y-m-d H:i:s'),
+            'reason' => $this->reason,
+            'status' => $this->status,
+            'approvedBy' => $this->approvedBy,
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s')
         ];

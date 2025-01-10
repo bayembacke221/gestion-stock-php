@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
-class Warehouse
+class InventoryItem
 {
-    private ?int $id= null;
-    private string $name;
-    private ?string $address;
-    private ?float $capacity;
-    private ?string $manager;
-    private bool $isActive;
+    private ?int $id=null;
+    private int $inventoryId;
+    private int $productId;
+    private float $expectedQuantity;
+    private float $actualQuantity;
+    private float $discrepancy;
+    private ?string $notes;
     private \DateTime $createdAt;
     private \DateTime $updatedAt;
 
@@ -37,24 +38,28 @@ class Warehouse
         return $this->id;
     }
 
-    public function getName(): string {
-        return $this->name;
+    public function getInventoryId(): int {
+        return $this->inventoryId;
     }
 
-    public function getAddress(): ?string {
-        return $this->address;
+    public function getProductId(): int {
+        return $this->productId;
     }
 
-    public function getCapacity(): ?float {
-        return $this->capacity;
+    public function getExpectedQuantity(): float {
+        return $this->expectedQuantity;
     }
 
-    public function getManager(): ?string {
-        return $this->manager;
+    public function getActualQuantity(): float {
+        return $this->actualQuantity;
     }
 
-    public function getIsActive(): bool {
-        return $this->isActive;
+    public function getDiscrepancy(): float {
+        return $this->discrepancy;
+    }
+
+    public function getNotes(): ?string {
+        return $this->notes;
     }
 
     public function getCreatedAt(): \DateTime {
@@ -72,28 +77,33 @@ class Warehouse
         return $this;
     }
 
-    public function setName(string $name): self {
-        $this->name = $name;
+    public function setInventoryId(int $inventoryId): self {
+        $this->inventoryId = $inventoryId;
         return $this;
     }
 
-    public function setAddress(?string $address): self {
-        $this->address = $address;
+    public function setProductId(int $productId): self {
+        $this->productId = $productId;
         return $this;
     }
 
-    public function setCapacity(?float $capacity): self {
-        $this->capacity = $capacity;
+    public function setExpectedQuantity(float $expectedQuantity): self {
+        $this->expectedQuantity = $expectedQuantity;
         return $this;
     }
 
-    public function setManager(?string $manager): self {
-        $this->manager = $manager;
+    public function setActualQuantity(float $actualQuantity): self {
+        $this->actualQuantity = $actualQuantity;
         return $this;
     }
 
-    public function setIsActive(bool $isActive): self {
-        $this->isActive = $isActive;
+    public function setDiscrepancy(float $discrepancy): self {
+        $this->discrepancy = $discrepancy;
+        return $this;
+    }
+
+    public function setNotes(?string $notes): self {
+        $this->notes = $notes;
         return $this;
     }
 
@@ -109,13 +119,14 @@ class Warehouse
 
     public function toArray(): array {
         $data= [
-            'name' => $this->name,
-            'address' => $this->address,
-            'capacity' => $this->capacity,
-            'manager' => $this->manager,
-            'isActive' => $this->isActive,
+            'inventoryId' => $this->inventoryId,
+            'productId' => $this->productId,
+            'expectedQuantity' => $this->expectedQuantity,
+            'actualQuantity' => $this->actualQuantity,
+            'discrepancy' => $this->discrepancy,
+            'notes' => $this->notes,
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
-            'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s')
+            'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s'),
         ];
 
         if ($this->id !== null) {

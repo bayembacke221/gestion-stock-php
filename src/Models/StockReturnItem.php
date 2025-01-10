@@ -2,14 +2,11 @@
 
 namespace App\Models;
 
-class Stock
+class StockReturnItem
 {
-    private ?int $id=null;
+    private int $stockReturnId;
     private int $productId;
-    private int $warehouseId;
     private float $quantity;
-    private ?string $status;
-    private \DateTime $lastCheckDate;
     private \DateTime $createdAt;
     private \DateTime $updatedAt;
 
@@ -23,7 +20,7 @@ class Stock
             $method = 'set' . ucfirst($key);
 
             if (method_exists($this, $method) && $value !== null) {
-                if (in_array($key, ['createdAt', 'updatedAt','lastCheckDate']) && !($value instanceof \DateTime)) {
+                if (in_array($key, ['createdAt', 'updatedAt']) && !($value instanceof \DateTime)) {
                     $value = new \DateTime($value);
                 }
                 $this->$method($value);
@@ -32,28 +29,17 @@ class Stock
     }
 
     // Getters
-    public function getId(): ?int {
-        return $this->id;
+
+    public function getStockReturnId(): int {
+        return $this->stockReturnId;
     }
 
     public function getProductId(): int {
         return $this->productId;
     }
 
-    public function getWarehouseId(): int {
-        return $this->warehouseId;
-    }
-
     public function getQuantity(): float {
         return $this->quantity;
-    }
-
-    public function getStatus(): ?string {
-        return $this->status;
-    }
-
-    public function getLastCheckDate(): \DateTime {
-        return $this->lastCheckDate;
     }
 
     public function getCreatedAt(): \DateTime {
@@ -66,8 +52,8 @@ class Stock
 
     // Setters
 
-    public function setId(int $id): self {
-        $this->id = $id;
+    public function setStockReturnId(int $stockReturnId): self {
+        $this->stockReturnId = $stockReturnId;
         return $this;
     }
 
@@ -76,23 +62,8 @@ class Stock
         return $this;
     }
 
-    public function setWarehouseId(int $warehouseId): self {
-        $this->warehouseId = $warehouseId;
-        return $this;
-    }
-
     public function setQuantity(float $quantity): self {
         $this->quantity = $quantity;
-        return $this;
-    }
-
-    public function setStatus(string $status): self {
-        $this->status = $status;
-        return $this;
-    }
-
-    public function setLastCheckDate(\DateTime $lastCheckDate): self {
-        $this->lastCheckDate = $lastCheckDate;
         return $this;
     }
 
@@ -107,20 +78,13 @@ class Stock
     }
 
     public function toArray(): array {
-        $data= [
+        return [
+            'stockReturnId' => $this->stockReturnId,
             'productId' => $this->productId,
-            'warehouseId' => $this->warehouseId,
             'quantity' => $this->quantity,
-            'status' => $this->status,
-            'lastCheckDate' => $this->lastCheckDate->format('Y-m-d H:i:s'),
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s')
         ];
-
-        if ($this->id !== null) {
-            $data['id'] = $this->getId();
-        }
-
-        return $data;
     }
+
 }

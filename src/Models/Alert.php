@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
-class Warehouse
+class Alert
 {
-    private ?int $id= null;
-    private string $name;
-    private ?string $address;
-    private ?float $capacity;
-    private ?string $manager;
-    private bool $isActive;
+    private ?int $id=null;
+    private string $type;
+    private string $severity;
+    private string $message;
+    private bool $isRead;
+    private ?int $productId;
+    private ?int $stockId;
     private \DateTime $createdAt;
     private \DateTime $updatedAt;
 
@@ -37,24 +38,28 @@ class Warehouse
         return $this->id;
     }
 
-    public function getName(): string {
-        return $this->name;
+    public function getType(): string {
+        return $this->type;
     }
 
-    public function getAddress(): ?string {
-        return $this->address;
+    public function getSeverity(): string {
+        return $this->severity;
     }
 
-    public function getCapacity(): ?float {
-        return $this->capacity;
+    public function getMessage(): string {
+        return $this->message;
     }
 
-    public function getManager(): ?string {
-        return $this->manager;
+    public function getIsRead(): bool {
+        return $this->isRead;
     }
 
-    public function getIsActive(): bool {
-        return $this->isActive;
+    public function getProductId(): ?int {
+        return $this->productId;
+    }
+
+    public function getStockId(): ?int {
+        return $this->stockId;
     }
 
     public function getCreatedAt(): \DateTime {
@@ -72,28 +77,33 @@ class Warehouse
         return $this;
     }
 
-    public function setName(string $name): self {
-        $this->name = $name;
+    public function setType(string $type): self {
+        $this->type = $type;
         return $this;
     }
 
-    public function setAddress(?string $address): self {
-        $this->address = $address;
+    public function setSeverity(string $severity): self {
+        $this->severity = $severity;
         return $this;
     }
 
-    public function setCapacity(?float $capacity): self {
-        $this->capacity = $capacity;
+    public function setMessage(string $message): self {
+        $this->message = $message;
         return $this;
     }
 
-    public function setManager(?string $manager): self {
-        $this->manager = $manager;
+    public function setIsRead(bool $isRead): self {
+        $this->isRead = $isRead;
         return $this;
     }
 
-    public function setIsActive(bool $isActive): self {
-        $this->isActive = $isActive;
+    public function setProductId(?int $productId): self {
+        $this->productId = $productId;
+        return $this;
+    }
+
+    public function setStockId(?int $stockId): self {
+        $this->stockId = $stockId;
         return $this;
     }
 
@@ -109,11 +119,12 @@ class Warehouse
 
     public function toArray(): array {
         $data= [
-            'name' => $this->name,
-            'address' => $this->address,
-            'capacity' => $this->capacity,
-            'manager' => $this->manager,
-            'isActive' => $this->isActive,
+            'type' => $this->type,
+            'severity' => $this->severity,
+            'message' => $this->message,
+            'isRead' => $this->isRead,
+            'productId' => $this->productId,
+            'stockId' => $this->stockId,
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updatedAt->format('Y-m-d H:i:s')
         ];

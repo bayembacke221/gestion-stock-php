@@ -159,7 +159,7 @@ class Product {
             'updated_at' => $this->getUpdatedAt()->format('Y-m-d H:i:s')
         ];
 
-        if ($this->id !== null) {
+            if ($this->id !== null) {
             $data['id'] = $this->getId();
         }
 
